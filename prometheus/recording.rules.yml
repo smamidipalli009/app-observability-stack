@@ -1,0 +1,64 @@
+# SLI: error ratio (5xx / total) computed over several windows.
+# These feed the multi-window, multi-burn-rate alerts in alerting.rules.yml,
+# per the pattern in the Google SRE Workbook (ch. 5, "Alerting on SLOs").
+groups:
+  - name: slo_recording_rules
+    interval: 30s
+    rules:
+      - record: slo:requests:error_ratio_rate5m
+        expr: |
+          sum(rate(http_requests_total{status="500"}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+
+      - record: slo:requests:error_ratio_rate30m
+        expr: |
+          sum(rate(http_requests_total{status="500"}[30m]))
+          /
+          sum(rate(http_requests_total[30m]))
+
+      - record: slo:requests:error_ratio_rate1h
+        expr: |
+          sum(rate(http_requests_total{status="500"}[1h]))
+          /
+          sum(rate(http_requests_total[1h]))
+
+      - record: slo:requests:error_ratio_rate2h
+        expr: |
+          sum(rate(http_requests_total{status="500"}[2h]))
+          /
+          sum(rate(http_requests_total[2h]))
+
+      - record: slo:requests:error_ratio_rate6h
+        expr: |
+          sum(rate(http_requests_total{status="500"}[6h]))
+          /
+          sum(rate(http_requests_total[6h]))
+
+      - record: slo:requests:error_ratio_rate1d
+        expr: |
+          sum(rate(http_requests_total{status="500"}[1d]))
+          /
+          sum(rate(http_requests_total[1d]))
+
+      - record: slo:requests:error_ratio_rate3d
+        expr: |
+          sum(rate(http_requests_total{status="500"}[3d]))
+          /
+          sum(rate(http_requests_total[3d]))
+
+      # Latency SLI: fraction of requests served under 300ms.
+      - record: slo:requests:latency_good_ratio_rate5m
+        expr: |
+          sum(rate(http_request_duration_seconds_bucket{le="0.3"}[5m]))
+          /
+          sum(rate(http_request_duration_seconds_count[5m]))
+
+      # Error budget remaining, as a percentage, using the 3d error ratio as
+      # a proxy for the 30-day SLO window. Prometheus's default retention
+      # (15d) is shorter than a true 30-day window would need — in
+      # production this would run against a long-term store (Thanos/Mimir)
+      # via remote_write instead. See Production Considerations in the README.
+      - record: slo:error_budget:remaining_percent
+        expr: |
+          (1 - (slo:requests:error_ratio_rate3d / 0.001)) * 100

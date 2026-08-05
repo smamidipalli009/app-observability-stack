@@ -1,0 +1,72 @@
+# Multi-window, multi-burn-rate alerting for a 99.9% availability SLO
+# (0.1% error budget), following the Google SRE Workbook's recommended
+# 4-alert pattern. Each alert requires BOTH a long window and a short
+# window to exceed the burn-rate threshold, which avoids paging on a
+# single short blip while still catching genuine fast burns quickly.
+#
+# | Severity | Long window | Short window | Burn rate | Budget consumed in |
+# |----------|-------------|--------------|-----------|---------------------|
+# | page     | 1h          | 5m           | 14.4x     | ~2 days if sustained |
+# | page     | 6h          | 30m          | 6x        | ~5 days if sustained |
+# | ticket   | 1d          | 2h           | 3x        | ~10 days if sustained|
+# | ticket   | 3d          | 6h           | 1x        | ~30 days if sustained|
+
+groups:
+  - name: slo_burn_rate_alerts
+    rules:
+      - alert: ErrorBudgetBurnFast
+        expr: |
+          slo:requests:error_ratio_rate1h > (14.4 * 0.001)
+          and
+          slo:requests:error_ratio_rate5m > (14.4 * 0.001)
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: "Fast error budget burn (page)"
+          description: "Error ratio is burning >14x the sustainable rate over both a 1h and 5m window. At this rate the 30-day error budget would be exhausted in ~2 days."
+
+      - alert: ErrorBudgetBurnModerate
+        expr: |
+          slo:requests:error_ratio_rate6h > (6 * 0.001)
+          and
+          slo:requests:error_ratio_rate30m > (6 * 0.001)
+        for: 15m
+        labels:
+          severity: page
+        annotations:
+          summary: "Moderate error budget burn (page)"
+          description: "Error ratio is burning >6x the sustainable rate over both a 6h and 30m window. At this rate the 30-day error budget would be exhausted in ~5 days."
+
+      - alert: ErrorBudgetBurnSlow
+        expr: |
+          slo:requests:error_ratio_rate1d > (3 * 0.001)
+          and
+          slo:requests:error_ratio_rate2h > (3 * 0.001)
+        for: 1h
+        labels:
+          severity: ticket
+        annotations:
+          summary: "Slow error budget burn (ticket)"
+          description: "Error ratio is burning >3x the sustainable rate over both a 1d and 2h window. At this rate the 30-day error budget would be exhausted in ~10 days."
+
+      - alert: ErrorBudgetBurnVerySlow
+        expr: |
+          slo:requests:error_ratio_rate3d > (1 * 0.001)
+          and
+          slo:requests:error_ratio_rate6h > (1 * 0.001)
+        for: 3h
+        labels:
+          severity: ticket
+        annotations:
+          summary: "Sustained error budget burn (ticket)"
+          description: "Error ratio has been at or above the exact sustainable rate over both a 3d and 6h window. If sustained, the full 30-day error budget will be consumed on schedule with zero margin."
+
+      - alert: AppDown
+        expr: up{job="app"} == 0
+        for: 2m
+        labels:
+          severity: page
+        annotations:
+          summary: "Sample app is unreachable"
+          description: "Prometheus has not been able to scrape the app for 2+ minutes."

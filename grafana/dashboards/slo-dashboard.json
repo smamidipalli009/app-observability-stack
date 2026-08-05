@@ -1,0 +1,776 @@
+{
+  "annotations": [
+    {
+      "kind": "AnnotationQuery",
+      "spec": {
+        "builtIn": true,
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "query": {
+          "datasource": { "name": "-- Grafana --" },
+          "group": "grafana",
+          "kind": "DataQuery",
+          "spec": {},
+          "version": "v0"
+        }
+      }
+    }
+  ],
+  "cursorSync": "Off",
+  "editable": true,
+  "elements": {
+    "panel-1": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "1 - slo:requests:error_ratio_rate5m",
+                      "instant": false,
+                      "legendFormat": "__auto",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 1,
+        "links": [],
+        "title": "Current Availability (5m)",
+        "vizConfig": {
+          "group": "stat",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "decimals": 3,
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "red", "value": 0 },
+                    { "color": "green", "value": 0.999 }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "percentChangeColorMode": "standard",
+              "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-2": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "vector(0.999)",
+                      "instant": false,
+                      "legendFormat": "__auto",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 2,
+        "links": [],
+        "title": "SLO Target",
+        "vizConfig": {
+          "group": "stat",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": { "fixedColor": "blue", "mode": "fixed" },
+                "decimals": 3,
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": 0 },
+                    { "color": "red", "value": 80 }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "percentChangeColorMode": "standard",
+              "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-3": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "(1 - (slo:requests:error_ratio_rate1h / 0.001)) * 100",
+                      "instant": false,
+                      "legendFormat": "__auto",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 3,
+        "links": [],
+        "title": "Error Budget Remaining",
+        "vizConfig": {
+          "group": "gauge",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "red", "value": 0 },
+                    { "color": "#EAB839", "value": 30 },
+                    { "color": "green", "value": 60 }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "options": {
+              "barShape": "flat",
+              "barWidthFactor": 0.5,
+              "effects": { "barGlow": false, "centerGlow": false, "gradient": true },
+              "endpointMarker": "point",
+              "minVizHeight": 75,
+              "minVizWidth": 75,
+              "orientation": "auto",
+              "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+              "segmentCount": 1,
+              "segmentSpacing": 0.3,
+              "shape": "gauge",
+              "showThresholdLabels": false,
+              "showThresholdMarkers": true,
+              "sizing": "auto",
+              "sparkline": true,
+              "textMode": "auto"
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-4": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "sum by (status) (rate(http_requests_total[5m]))",
+                      "instant": false,
+                      "legendFormat": "{{status}}",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 4,
+        "links": [],
+        "title": "Request Rate (by status)",
+        "vizConfig": {
+          "group": "timeseries",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": { "mode": "palette-classic" },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": { "type": "linear" },
+                  "showPoints": "auto",
+                  "showValues": false,
+                  "spanNulls": false,
+                  "stacking": { "group": "A", "mode": "none" },
+                  "thresholdsStyle": { "mode": "off" }
+                },
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": 0 },
+                    { "color": "red", "value": 80 }
+                  ]
+                },
+                "unit": "reqps"
+              },
+              "overrides": []
+            },
+            "options": {
+              "annotations": { "clustering": -1, "multiLane": false },
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "enableFacetedFilter": false,
+                "overflow": "ellipsis",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": { "hideZeros": false, "mode": "single", "sort": "none" }
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-5": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:error_ratio_rate5m / 0.001",
+                      "instant": false,
+                      "legendFormat": "burn rate (5m)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:error_ratio_rate1h / 0.001",
+                      "instant": false,
+                      "legendFormat": "burn rate (1h)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "B"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:error_ratio_rate6h / 0.001",
+                      "instant": false,
+                      "legendFormat": "burn rate (6h)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "C"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:error_ratio_rate1d / 0.001",
+                      "instant": false,
+                      "legendFormat": "burn rate (1d)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "D"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "14.4",
+                      "instant": false,
+                      "legendFormat": "page threshold (14.4x)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "E"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "6",
+                      "instant": false,
+                      "legendFormat": "page threshold (6x)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "F"
+                }
+              },
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "1",
+                      "instant": false,
+                      "legendFormat": "sustainable rate (1x)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "G"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 5,
+        "links": [],
+        "title": "Burn Rate, all windows vs thresholds",
+        "vizConfig": {
+          "group": "timeseries",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": { "mode": "palette-classic" },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": { "type": "linear" },
+                  "showPoints": "auto",
+                  "showValues": false,
+                  "spanNulls": false,
+                  "stacking": { "group": "A", "mode": "none" },
+                  "thresholdsStyle": { "mode": "off" }
+                },
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": 0 },
+                    { "color": "red", "value": 80 }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "options": {
+              "annotations": { "clustering": -1, "multiLane": false },
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "enableFacetedFilter": false,
+                "overflow": "ellipsis",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-6": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:latency_good_ratio_rate5m",
+                      "instant": false,
+                      "legendFormat": "__auto",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 6,
+        "links": [],
+        "title": "Latency SLI, % of requests under 300ms",
+        "vizConfig": {
+          "group": "timeseries",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": { "mode": "palette-classic" },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": { "type": "linear" },
+                  "showPoints": "auto",
+                  "showValues": false,
+                  "spanNulls": false,
+                  "stacking": { "group": "A", "mode": "none" },
+                  "thresholdsStyle": { "mode": "off" }
+                },
+                "max": 1,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": 0 },
+                    { "color": "red", "value": 80 }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "options": {
+              "annotations": { "clustering": -1, "multiLane": false },
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "enableFacetedFilter": false,
+                "overflow": "ellipsis",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": { "hideZeros": false, "mode": "single", "sort": "none" }
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    },
+    "panel-7": {
+      "kind": "Panel",
+      "spec": {
+        "data": {
+          "kind": "QueryGroup",
+          "spec": {
+            "queries": [
+              {
+                "kind": "PanelQuery",
+                "spec": {
+                  "hidden": false,
+                  "query": {
+                    "datasource": { "name": "cfsft4zvf71tsc" },
+                    "group": "prometheus",
+                    "kind": "DataQuery",
+                    "spec": {
+                      "editorMode": "code",
+                      "expr": "slo:requests:error_ratio_rate5m",
+                      "instant": false,
+                      "legendFormat": "error ratio (5m)",
+                      "range": true
+                    },
+                    "version": "v0"
+                  },
+                  "refId": "A"
+                }
+              }
+            ],
+            "queryOptions": {},
+            "transformations": []
+          }
+        },
+        "description": "",
+        "id": 7,
+        "links": [],
+        "title": "Current Error Rate (%)",
+        "vizConfig": {
+          "group": "timeseries",
+          "kind": "VizConfig",
+          "spec": {
+            "fieldConfig": {
+              "defaults": {
+                "color": { "mode": "palette-classic" },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "barWidthFactor": 0.6,
+                  "drawStyle": "line",
+                  "fillOpacity": 0,
+                  "gradientMode": "none",
+                  "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": { "type": "linear" },
+                  "showPoints": "auto",
+                  "showValues": false,
+                  "spanNulls": false,
+                  "stacking": { "group": "A", "mode": "none" },
+                  "thresholdsStyle": { "mode": "off" }
+                },
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    { "color": "green", "value": 0 },
+                    { "color": "red", "value": 80 }
+                  ]
+                },
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "options": {
+              "annotations": { "clustering": -1, "multiLane": false },
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "enableFacetedFilter": false,
+                "overflow": "ellipsis",
+                "placement": "bottom",
+                "showLegend": true
+              },
+              "tooltip": { "hideZeros": false, "mode": "single", "sort": "none" }
+            }
+          },
+          "version": "13.1.0"
+        }
+      }
+    }
+  },
+  "layout": {
+    "kind": "GridLayout",
+    "spec": {
+      "items": [
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-1" }, "height": 6, "width": 6, "x": 0, "y": 0 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-2" }, "height": 6, "width": 6, "x": 6, "y": 0 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-3" }, "height": 6, "width": 6, "x": 12, "y": 0 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-4" }, "height": 6, "width": 6, "x": 18, "y": 0 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-5" }, "height": 9, "width": 24, "x": 0, "y": 6 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-6" }, "height": 8, "width": 12, "x": 0, "y": 15 } },
+        { "kind": "GridLayoutItem", "spec": { "element": { "kind": "ElementReference", "name": "panel-7" }, "height": 8, "width": 12, "x": 12, "y": 15 } }
+      ]
+    }
+  },
+  "links": [],
+  "liveNow": false,
+  "preload": false,
+  "tags": [],
+  "timeSettings": {
+    "autoRefresh": "",
+    "autoRefreshIntervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"],
+    "fiscalYearStartMonth": 0,
+    "from": "now-5m",
+    "hideTimepicker": false,
+    "timezone": "browser",
+    "to": "now"
+  },
+  "title": "App SLO Dashboard",
+  "variables": []
+}

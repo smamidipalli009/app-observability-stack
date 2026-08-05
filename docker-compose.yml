@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # NOTE: this database is provisioned but NOT YET USED by the app.
+  # It's a placeholder for planned DB-call instrumentation (query duration,
+  # error rate, a simulated "DB is slow/down" chaos scenario) — see the
+  # Status / Roadmap section in README.md. The app currently only reads
+  # DATABASE_URL as an environment variable; nothing queries this yet.
+  db:
+    image: postgres:16-alpine
+    container_name: slo-db
+    environment:
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=apppassword
+      - POSTGRES_DB=appdb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: slo-app
+    environment:
+      - DATABASE_URL=postgresql://appuser:apppassword@db:5432/appdb
+    ports:
+      - "9000:5000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  loadgen:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.loadgen
+    container_name: slo-loadgen
+    environment:
+      - APP_URL=http://app:5000/api
+      - REQUEST_INTERVAL=0.2
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  db-data:
